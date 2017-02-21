@@ -1,4 +1,5 @@
 #include <string.h>
+#include <sodium.h>
 
 #include "verify.h"
 #include "crc32.c"
@@ -41,6 +42,7 @@ int verify_simple_pack_data(char *data, int datalength, char *outdata) {
     outdata[1] = out_size;
     outdata[2] = rand_len;
     memmove(outdata + rand_len + 2, data, datalength);
+    randombytes_buf(outdata + 3, rand_len);
     fillcrc32((unsigned char *)outdata, out_size);
     return out_size;
 }
